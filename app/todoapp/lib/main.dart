@@ -67,36 +67,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      // body: Container(
-      //   child: Padding(
-      //     padding: EdgeInsets.fromLTRB(20, 40, 20, 0),
-      //     child: Column(
-      //       children: [
-      //         // Padding(
-      //         //   padding: EdgeInsets.fromLTRB(20, 40, 20, 0),
-      //         //   child: Text(
-      //         //     'TodoList',
-      //         //     style: TextStyle(
-      //         //       fontSize: 20,
-      //         //     ),
-      //         //   ),
-      //         // ),
-      //         Text(
-      //           'TodoList',
-      //           style: TextStyle(
-      //             fontSize: 20,
-      //           ),
-      //         ),
-      //         SizedBox(
-      //           height: 300,
-      //           child: ListView(
-      //             children: _getItems(),
-      //           ),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Add task',
