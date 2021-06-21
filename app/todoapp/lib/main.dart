@@ -38,6 +38,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _textEditingController = TextEditingController();
   final List<TodoItem> _todoList = <TodoItem>[
     TodoItem(
       title: 'test1',
@@ -53,14 +56,21 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  final TextEditingController _textEditingController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+              child: Text(
+                'TodoList',
+                style: TextStyle(
+                  fontSize: 22,
+                ),
+              ),
+            ),
             Expanded(
               child: _buildTodoList(),
             ),
@@ -68,19 +78,65 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await _showTodoDialog(context);
+        },
         tooltip: 'Add task',
         child: Icon(Icons.add),
       ),
     );
   }
 
+  Future<void> _showTodoDialog(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: AppTheme.colors.blue,
+          content: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _textEditingController,
+                  validator: (value) {
+                    return value!.isNotEmpty ? null : "Can't be empty";
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Enter something todo",
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Add'),
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _addTodoItem(_textEditingController.text, 'test');
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _addTodoItem(String title, String category) {
     setState(() {
-      _todoList.add(TodoItem(
-        title: title,
-        category: category,
-      ));
+      _todoList.add(
+        TodoItem(
+          title: title,
+          category: category,
+        ),
+      );
     });
     _textEditingController.clear();
   }
