@@ -58,37 +58,45 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // body: ListView(children: _getItems(),),
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(20, 40, 20, 0),
-          child: Column(
-            children: [
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(20, 40, 20, 0),
-              //   child: Text(
-              //     'TodoList',
-              //     style: TextStyle(
-              //       fontSize: 20,
-              //     ),
-              //   ),
-              // ),
-              Text(
-                'TodoList',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              SizedBox(
-                height: 300,
-                child: ListView(
-                  children: _getItems(),
-                ),
-              ),
-            ],
-          ),
+      body: SafeArea(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: _buildTodoList(),
+            ),
+          ],
         ),
       ),
+      // body: Container(
+      //   child: Padding(
+      //     padding: EdgeInsets.fromLTRB(20, 40, 20, 0),
+      //     child: Column(
+      //       children: [
+      //         // Padding(
+      //         //   padding: EdgeInsets.fromLTRB(20, 40, 20, 0),
+      //         //   child: Text(
+      //         //     'TodoList',
+      //         //     style: TextStyle(
+      //         //       fontSize: 20,
+      //         //     ),
+      //         //   ),
+      //         // ),
+      //         Text(
+      //           'TodoList',
+      //           style: TextStyle(
+      //             fontSize: 20,
+      //           ),
+      //         ),
+      //         SizedBox(
+      //           height: 300,
+      //           child: ListView(
+      //             children: _getItems(),
+      //           ),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
         tooltip: 'Add task',
@@ -115,14 +123,14 @@ class _HomePageState extends State<HomePage> {
           height: 85,
           color: AppTheme.colors.blue,
           child: Padding(
-            padding: EdgeInsets.all(16),
+            padding: EdgeInsets.all(21),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   todoItem.title,
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 22,
                   ),
                 ),
                 Text(
@@ -131,30 +139,23 @@ class _HomePageState extends State<HomePage> {
                     fontSize: 16,
                   ),
                 ),
+                // Icon
               ],
             ),
           ),
-          // child: ListTile(
-          //   title: Text(
-          //     todoItem.title,
-          //   ),
-          //   subtitle: Text(
-          //     todoItem.category,
-          //   ),
-          // ),
-          // color: AppTheme.colors.blue,
-          // margin: EdgeInsets.fromLTRB(0, 12, 0, 12),
         ),
       ),
       margin: EdgeInsets.fromLTRB(0, 12, 0, 12),
     );
   }
 
-  List<Widget> _getItems() {
-    final List<Widget> _todoWidgets = <Widget>[];
-    for (TodoItem todoItem in _todoList) {
-      _todoWidgets.add(_buildTodoItem(todoItem));
-    }
-    return _todoWidgets;
+  Widget _buildTodoList() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: _todoList.length,
+      itemBuilder: (context, i) {
+        return _buildTodoItem(_todoList[i]);
+      },
+    );
   }
 }
