@@ -45,14 +45,17 @@ class _HomePageState extends State<HomePage> {
     TodoItem(
       title: 'test1',
       category: 'home',
+      done: false,
     ),
     TodoItem(
       title: 'test2',
       category: 'home',
+      done: false,
     ),
     TodoItem(
       title: 'test3',
       category: 'home',
+      done: true,
     ),
   ];
 
@@ -135,6 +138,7 @@ class _HomePageState extends State<HomePage> {
         TodoItem(
           title: title,
           category: category,
+          done: false,
         ),
       );
     });
@@ -150,24 +154,64 @@ class _HomePageState extends State<HomePage> {
           color: AppTheme.colors.blue,
           child: Padding(
             padding: EdgeInsets.all(21),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  todoItem.title,
-                  style: TextStyle(
-                    fontSize: 22,
-                  ),
+                Column(
+                  children: [
+                    Text(
+                      todoItem.title,
+                      style: TextStyle(
+                        fontSize: 22,
+                      ),
+                    ),
+                    Text(
+                      todoItem.category,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  todoItem.category,
-                  style: TextStyle(
-                    fontSize: 16,
+                IconButton(
+                  icon: Icon(
+                    todoItem.done
+                        ? Icons.check_circle_outline
+                        : Icons.circle_outlined,
+                    size: 32,
                   ),
+                  onPressed: () {
+                    setState(() {
+                      todoItem.done = !todoItem.done;
+                    });
+                  },
+                  color: todoItem.done ? AppTheme.colors.yellow : Colors.white,
                 ),
-                // Icon
               ],
             ),
+            // child: Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     Text(
+            //       todoItem.title,
+            //       style: TextStyle(
+            //         fontSize: 22,
+            //       ),
+            //     ),
+            //     Text(
+            //       todoItem.category,
+            //       style: TextStyle(
+            //         fontSize: 16,
+            //       ),
+            //     ),
+            //     Icon(
+            //       todoItem.done
+            //           ? Icons.check_circle_outline
+            //           : Icons.circle_outlined,
+            //       color: todoItem.done ? AppTheme.colors.yellow : null,
+            //     ),
+            //   ],
+            // ),
           ),
         ),
       ),
