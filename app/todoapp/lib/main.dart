@@ -61,36 +61,61 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-              child: Text(
-                'TodoList',
-                style: TextStyle(
-                  fontSize: 22,
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        body: Column(
+          children: [
+            SafeArea(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text(
+                  'TodoList',
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
                 ),
               ),
             ),
-            Text('Todo'),
             Expanded(
-              child: _buildTodoList(false),
-            ),
-            Text('Done'),
-            Expanded(
-              child: _buildTodoList(true),
+              child: TabBarView(
+                children: [
+                  Container(
+                    child: _buildTodoList(false),
+                    color: AppTheme.colors.blue[700],
+                  ),
+                  Container(
+                    child: _buildTodoList(true),
+                    color: AppTheme.colors.blue[700],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await _showTodoDialog(context);
-        },
-        tooltip: 'Add task',
-        child: Icon(Icons.add),
+        bottomNavigationBar: TabBar(
+          tabs: [
+            Tab(
+              icon: Icon(Icons.circle_outlined),
+            ),
+            Tab(
+              icon: Icon(Icons.check_circle_outline),
+            )
+          ],
+          labelColor: AppTheme.colors.yellow,
+          unselectedLabelColor: AppTheme.colors.blue[100],
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorPadding: EdgeInsets.all(5.0),
+          indicatorColor: AppTheme.colors.yellow,
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await _showTodoDialog(context);
+          },
+          tooltip: 'Add task',
+          child: Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
