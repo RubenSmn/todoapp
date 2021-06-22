@@ -74,8 +74,13 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+            Text('Todo'),
             Expanded(
-              child: _buildTodoList(),
+              child: _buildTodoList(false),
+            ),
+            Text('Done'),
+            Expanded(
+              child: _buildTodoList(true),
             ),
           ],
         ),
@@ -220,12 +225,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildTodoList() {
+  Widget _buildTodoList(status) {
+    var list = [];
+    if (status == null)
+      list = _todoList;
+    else if (status)
+      list = _todoList.where((t) => t.done).toList();
+    else
+      list = _todoList.where((t) => !t.done).toList();
+
     return ListView.builder(
       padding: const EdgeInsets.all(16),
-      itemCount: _todoList.length,
+      itemCount: list.length,
       itemBuilder: (context, i) {
-        return _buildTodoItem(_todoList[i]);
+        return _buildTodoItem(list[i]);
       },
     );
   }
