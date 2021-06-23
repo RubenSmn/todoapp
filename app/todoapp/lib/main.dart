@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
       done: true,
     ),
   ];
+  String? _filterCategory = 'all';
 
   @override
   Widget build(BuildContext context) {
@@ -67,14 +68,52 @@ class _HomePageState extends State<HomePage> {
         body: Column(
           children: [
             SafeArea(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
-                child: Text(
-                  'TodoList',
-                  style: TextStyle(
-                    fontSize: 22,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20, 20, 0, 20),
+                    child: Text(
+                      'TodoList',
+                      style: TextStyle(
+                        fontSize: 22,
+                      ),
+                    ),
                   ),
-                ),
+                  Container(
+                    child: DropdownButton<String>(
+                      value: _filterCategory,
+                      dropdownColor: AppTheme.colors.blue,
+                      items: <String>[
+                        'all',
+                        'home',
+                        'test',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      hint: Text(
+                        'choose a category',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
+                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          _filterCategory = value;
+                        });
+                      },
+                    ),
+                  )
+                ],
               ),
             ),
             Expanded(
@@ -220,29 +259,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            // child: Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     Text(
-            //       todoItem.title,
-            //       style: TextStyle(
-            //         fontSize: 22,
-            //       ),
-            //     ),
-            //     Text(
-            //       todoItem.category,
-            //       style: TextStyle(
-            //         fontSize: 16,
-            //       ),
-            //     ),
-            //     Icon(
-            //       todoItem.done
-            //           ? Icons.check_circle_outline
-            //           : Icons.circle_outlined,
-            //       color: todoItem.done ? AppTheme.colors.yellow : null,
-            //     ),
-            //   ],
-            // ),
           ),
         ),
       ),
@@ -258,6 +274,9 @@ class _HomePageState extends State<HomePage> {
       list = _todoList.where((t) => t.done).toList();
     else
       list = _todoList.where((t) => !t.done).toList();
+
+    if (_filterCategory != 'all')
+      list = list.where((t) => t.category == _filterCategory).toList();
 
     return ListView.builder(
       padding: const EdgeInsets.all(16),
