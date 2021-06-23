@@ -58,7 +58,18 @@ class _HomePageState extends State<HomePage> {
       done: true,
     ),
   ];
+
   String? _filterCategory = 'all';
+  // Might need to find a better way of doing this
+  List<String> _dropdownCategories = [];
+  List<String> _getDropdownCategories() {
+    var list = _todoList.map((t) => t.category).toSet().toList();
+    return list;
+  }
+
+  _HomePageState() {
+    _dropdownCategories = _getDropdownCategories();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +97,7 @@ class _HomePageState extends State<HomePage> {
                       dropdownColor: AppTheme.colors.blue,
                       items: <String>[
                         'all',
-                        'home',
-                        'test',
+                        ..._dropdownCategories,
                       ].map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -191,6 +201,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _addTodoItem(_textEditingController.text, 'test');
+                  _dropdownCategories = _getDropdownCategories();
                   Navigator.of(context).pop();
                 }
               },
