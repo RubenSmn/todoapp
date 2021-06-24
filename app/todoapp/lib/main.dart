@@ -40,7 +40,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _todoInputController = TextEditingController();
+  final TextEditingController _categoryInputController =
+      TextEditingController();
   final List<TodoItem> _todoList = <TodoItem>[
     TodoItem(
       title: 'test1',
@@ -181,7 +183,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
-                  controller: _textEditingController,
+                  controller: _todoInputController,
                   validator: (value) {
                     return value!.isNotEmpty ? null : "Can't be empty";
                   },
@@ -192,6 +194,31 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                TextField(
+                  controller: _categoryInputController,
+                  decoration: InputDecoration(
+                    suffixIcon: PopupMenuButton<String>(
+                      icon: Icon(Icons.arrow_drop_down),
+                      onSelected: (String value) {
+                        _categoryInputController.text = value;
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          'all',
+                          ..._getDropdownCategories(),
+                        ].map<PopupMenuItem<String>>((String value) {
+                          return PopupMenuItem(
+                            textStyle: TextStyle(
+                              backgroundColor: AppTheme.colors.blue,
+                            ),
+                            child: Text(value),
+                            value: value,
+                          );
+                        }).toList();
+                      },
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -200,7 +227,10 @@ class _HomePageState extends State<HomePage> {
               child: Text('Add'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
-                  _addTodoItem(_textEditingController.text, 'test');
+                  _addTodoItem(
+                    _todoInputController.text,
+                    _categoryInputController.text,
+                  );
                   _dropdownCategories = _getDropdownCategories();
                   Navigator.of(context).pop();
                 }
@@ -222,7 +252,8 @@ class _HomePageState extends State<HomePage> {
         ),
       );
     });
-    _textEditingController.clear();
+    _todoInputController.clear();
+    _categoryInputController.clear();
   }
 
   Widget _buildTodoItem(TodoItem todoItem) {
