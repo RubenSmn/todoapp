@@ -1,3 +1,4 @@
+from enum import unique
 from playhouse.shortcuts import model_to_dict
 from todoapp import db
 from peewee import BooleanField, ForeignKeyField, Model, CharField
@@ -10,7 +11,7 @@ class BaseModel(Model):
     return model_to_dict(self)
 
 class Category(BaseModel):
-  category = CharField()
+  category = CharField(unique=True)
 
 class Todo(BaseModel):
   title = CharField()
