@@ -9,7 +9,9 @@ class BaseModel(Model):
     database = db
   
   def to_json(self):
-    return model_to_dict(self)
+    model = model_to_dict(self)
+    model['created_at'] = model['created_at'].strftime("%m/%d/%Y, %H:%M:%S")
+    return model
 
 class Category(BaseModel):
   category = CharField(unique=True)
@@ -18,7 +20,12 @@ class Category(BaseModel):
 class Todo(BaseModel):
   title = CharField()
   completed = BooleanField(default=False)
-  category = ForeignKeyField(Category, backref='todos')
+  category = ForeignKeyField(Category, backref='todos', related_name='test')
   deleted = BooleanField(default=False)
   created_at = DateTimeField(default=datetime.datetime.now)
   updated_at = DateTimeField(default=datetime.datetime.now)
+
+  def to_json(self):
+    model = super().to_json()
+    model['updated_at'] = model['updated_at'].strftime("%m/%d/%Y, %H:%M:%S")
+    return model 
