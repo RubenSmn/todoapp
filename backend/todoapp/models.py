@@ -13,7 +13,7 @@ class BaseModel(Model):
 
 class Category(BaseModel):
   category = CharField(unique=True)
-  created_at = DateTimeField(deafult=datetime.datetime.now)
+  created_at = DateTimeField(default=datetime.datetime.now)
 
 class Todo(BaseModel):
   title = CharField()
