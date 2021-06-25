@@ -17,8 +17,8 @@ class Category(BaseModel):
 
 class Todo(BaseModel):
   title = CharField()
-  completed = BooleanField()
+  completed = BooleanField(default=False)
   category = ForeignKeyField(Category, backref='todos')
   deleted = BooleanField(default=False)
-  created_at = DateTimeField(deafult=datetime.datetime.now)
-  updated_at = DateTimeField(deafult=datetime.datetime.now)
+  created_at = DateTimeField(default=datetime.datetime.now)
+  updated_at = DateTimeField(default=datetime.datetime.now)
