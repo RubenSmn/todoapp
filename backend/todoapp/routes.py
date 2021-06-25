@@ -14,10 +14,13 @@ class TodoController(Resource):
     data = request.json
     if not 'title' in data.keys():
       return {'message': 'Invalid data', 'data': {}}, 400
+    category, created = Category.get_or_create(
+      category=data['category']
+    )
     Todo.create(
       title=data['title'],
       completed=data['completed'],
-      category=data['category'],
+      category=category.id,
     )
     return {'message': 'Todo created', 'data': {}}, 200
 
@@ -29,12 +32,3 @@ class CategoryController(Resource):
       return {'message': 'No categories found', 'data': []}, 200
     categories = [category.to_json() for category in categories]
     return {'message': 'Succes', 'data': categories}, 200
-  
-  def post(self):
-    data = request.json
-    if not 'category' in data.keys():
-      return {'message': 'Invalid data', 'data': {}}, 400
-    Category.create(
-      category=data['category']
-    )
-    return {'message': 'Category created', 'data': {}}, 200
