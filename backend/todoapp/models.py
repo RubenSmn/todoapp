@@ -28,4 +28,5 @@ class Todo(BaseModel):
   def to_json(self):
     model = super().to_json()
     model['updated_at'] = model['updated_at'].strftime("%m/%d/%Y, %H:%M:%S")
+    model['category'] = model['category']['category']
     return model 

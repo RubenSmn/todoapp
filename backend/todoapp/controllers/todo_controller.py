@@ -26,9 +26,6 @@ class TodoController(Resource):
     if not todos:
       return {'message': 'No todos found', 'data': []}, 200
     todos = [todo.to_json() for todo in todos]
-    # TODO find a better way to select only the category
-    for todo in todos:
-      todo['category'] = todo['category']['category']
     return {'message': 'Succes', 'data': todos}, 200
 
   def post(self):

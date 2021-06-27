@@ -14,6 +14,6 @@ from todoapp.models import Todo, Category
 db.create_tables([Todo, Category])
 
 # Add Controllers to api
-from todoapp.routes import TodoController, CategoryController
+from todoapp.controllers import TodoController, CategoryController
 api.add_resource(TodoController, '/todos')
 api.add_resource(CategoryController, '/categories')
