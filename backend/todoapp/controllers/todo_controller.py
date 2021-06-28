@@ -15,6 +15,11 @@ post_parser.add_argument(
 
 put_parser = reqparse.RequestParser()
 put_parser.add_argument(
+  'id',
+  required=True,
+  type=int
+)
+put_parser.add_argument(
   'completed',
   required=True,
   type=bool
@@ -39,7 +44,10 @@ class TodoController(Resource):
     )
     return {'message': 'Todo created', 'data': {}}, 200
   
-  def put(self, id):
-    args = post_parser.parse_args()
-    todo = Todo.get_by_id(id)
+  def put(self):
+    args = put_parser.parse_args()
+    todo = Todo.get_by_id(args['id'])
+    todo.completed = args['completed']
+    todo.save()
+    return {'mesasge': 'Todo updated'}, 200
 
