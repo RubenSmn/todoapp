@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todoapp/themes/theme.dart';
 
-import 'TodoItem.dart';
+import 'models/TodoItem.dart';
 
 void main() {
   runApp(TodoApp());
